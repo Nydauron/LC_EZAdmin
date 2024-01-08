@@ -22,21 +22,28 @@ namespace LC_EZAdmin
 
             // Read ids from banned file
             Log.LogInfo($"Reading {BannedListFilename} ...");
-            string[] stringIds = System.IO.File.ReadAllLines(BannedListFilename);
-            List<ulong> ids = new List<ulong>();
-            foreach (string idStr in stringIds) {
-                ulong id;
-                if (UInt64.TryParse(idStr.Trim(), out id))
+            try
+            {
+                string[] stringIds = System.IO.File.ReadAllLines(BannedListFilename);
+                List<ulong> ids = new List<ulong>();
+                foreach (string idStr in stringIds)
                 {
-                    ids.Add(id);
+                    if (UInt64.TryParse(idStr.Trim(), out ulong id))
+                    {
+                        ids.Add(id);
+                    }
+                    else
+                    {
+                        Log.LogWarning($"Id \"{idStr}\" is not a valid integer. Omitting from ban list");
+                    }
                 }
-                else
-                {
-                    Log.LogWarning($"Id \"{idStr}\" is not a valid integer. Omitting from ban list");
-                }
+                BannedIds.UnionWith(ids);
+                Log.LogInfo($"Sucessfully loaded in {ids.Count()} players into ban list");
             }
-            BannedIds.UnionWith(ids);
-            Log.LogInfo($"Sucessfully loaded in {ids.Count()} players into ban list");
+            catch (System.IO.FileNotFoundException)
+            {
+                Log.LogWarning($"File \"{BannedListFilename}\" was not found. Ban list will be empty");
+            }
 
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll(typeof(Patches));
