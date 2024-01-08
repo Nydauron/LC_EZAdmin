@@ -11,7 +11,7 @@ namespace LC_EZAdmin
     public class Plugin : BaseUnityPlugin
     {
         internal static ManualLogSource Log;
-        internal static HashSet<ulong> BannedIds;
+        internal static HashSet<ulong> BannedIds = new HashSet<ulong>();
         internal const string BannedListFilename = "banned_ids.txt";
 
         private void Awake()
@@ -35,7 +35,7 @@ namespace LC_EZAdmin
                     Log.LogWarning($"Id \"{idStr}\" is not a valid integer. Omitting from ban list");
                 }
             }
-            BannedIds = new HashSet<ulong>(ids);
+            BannedIds.UnionWith(ids);
             Log.LogInfo($"Sucessfully loaded in {ids.Count()} players into ban list");
 
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
