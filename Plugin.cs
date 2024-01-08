@@ -18,10 +18,10 @@ namespace LC_EZAdmin
         {
             Log = base.Logger;
             // Plugin startup logic
-            Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} is loaded!");
+            Log.LogMessage($"{PluginInfo.PLUGIN_NAME} has started");
 
-            // read ids from banned file
-            Log.LogInfo($"Reading {BannedListFilename}");
+            // Read ids from banned file
+            Log.LogInfo($"Reading {BannedListFilename} ...");
             string[] stringIds = System.IO.File.ReadAllLines(BannedListFilename);
             List<ulong> ids = new List<ulong>();
             foreach (string idStr in stringIds) {
@@ -32,14 +32,15 @@ namespace LC_EZAdmin
                 }
                 else
                 {
-                    Log.LogWarning($"Id {idStr} is not a valid integer. Omitting from ban list.");
+                    Log.LogWarning($"Id \"{idStr}\" is not a valid integer. Omitting from ban list");
                 }
             }
             BannedIds = new HashSet<ulong>(ids);
-            Log.LogInfo($"Loaded in {ids.Count()} players into ban list");
+            Log.LogInfo($"Sucessfully loaded in {ids.Count()} players into ban list");
 
             var harmony = new Harmony(PluginInfo.PLUGIN_GUID);
             harmony.PatchAll(typeof(Patches));
+            Log.LogMessage($"{PluginInfo.PLUGIN_NAME} has finished loading");
         }
     }
     internal class Patches
