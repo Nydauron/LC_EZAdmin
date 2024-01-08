@@ -63,7 +63,7 @@ from the file
 This plugin has been tested to work with MoreCompany and LateCompany.
 
 ## Planned features
--[] Add UI for adding a dedicated "ban" button
+- [ ] Add UI for adding a dedicated "ban" button
   - Will be togglable via configuration
 
 ## Inspired by
