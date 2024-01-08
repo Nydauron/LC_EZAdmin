@@ -34,6 +34,12 @@ of missing dll errors.
     dotnet build
     ```
     The built files will then be located within `build/Debug/netstandard2.1`.
+	
+	If you want to build under the release configuration, run:
+	```
+	dotnet build --configuration Release /p:DebugSymbols=false /p:DebugType=None
+	```
+	and the build files will be located within `build/Release/netstandard2.1`.
 
 2. Copy the `org.bepinex.plugins.LC_EZAdmin` files into a separate folder with a non-conflicting
 name (e.g. Thunderstore client would default to `Nydauron-EZ-Admin`) and place the created folder
